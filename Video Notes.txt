@@ -1,0 +1,96 @@
+August 19, 2023
+Project Start
+	Actions Taken
+	-Started Video 0
+	-Downloaded/unzipped framework
+	-Put it in the Github folder, uploaded it to Github
+	-Put a pixel on the screen ( "gfx.PutPixel()")
+	-Left open windows etc at the end of session
+
+August 20, 2023
+Video 0
+	Actions Taken
+	-Restarted video (faster to do this with everything left open from yesterday)
+	-Got back to this late in the evening (~2400H) after interruptions
+	-Added a .gitignore file
+	-Copied a .gitignore file suggested in Stackoverflow
+	-Useful Visual Studio tips: F5 to start with Debugger
+								arrows to move up/down the list of suggestions in Intellisense
+								tab to select the current suggestion from Intellisense
+								ctrl+shift+space to bring up the function info from Intellisense
+
+August 21, 2023
+Video 1
+	Actions Taken
+	-Woke late, started after shower and late breakfast
+	-Double while-loop to put a pixel grid on the screen (every 100 pixels)
+	-Converted pixel grid loop to 48 iterations instead of 480,000 (800x600)
+		^This was done by using "counter += 100" instead of "counter++"
+	-Converted reticle to take x and y centre coordinates
+	-There is no single guiding principle governing the use of semicolons in C++:
+		https://web.archive.org/web/20100906085102/http://cpptalk.net/confused-about-the-meaning-of-the-semicolon-vt11965.html
+		https://stackoverflow.com/questions/785686/semicolon-after-class-declaration-braces
+August 21, 2023
+Video 2
+	Actions Taken
+	-See Video 1 notes above
+
+August 21, 2023
+Video 3
+	Actions Taken
+	-Lined up parameters for easier editing (use of whitespace for easier editing)
+	-Basic keyboard input (i.e. "  wnd.kbd.KeyIsPressed(/*virtual keycode*/)  ")
+	-Colour changes
+	-Cursor change
+
+August 22, 2023
+Video 4.1
+	Actions Taken
+	-Made cursor keep position instead of popping back to centre by moving x, y, r, g, b variables to global scope
+	-Reduced movement from 100 to 3 pixels
+
+August 23, 2023
+Video 4.1
+	Actions Taken
+	-Restarted video
+	-Stepped through program with Debugger
+
+August 23, 2023
+Video 4.2
+	Actions Taken
+	-Created a mouse cursor that checks to make sure the mouse is in the window and moves to match mouse position
+
+August 24, 2023
+Video 4.2
+	Actions Taken
+	-Resume from ~14:00
+	-Moved mouse cursor code into Removed Code.cc
+	-Moved cursor x,y,r,g,b into the Game class in Game.h (User Variables section at the bottom)
+
+August 24, 2023
+Video 4.3
+	Actions Taken
+	-Moved logic into UpdateModel
+
+August 25, 2023
+Video 5
+	Actions Taken
+	-Screen boundary checks fixed
+	-Value checks for colour change
+
+August 26, 2023
+Video 6
+	Actions Taken
+	-Created a second box and created a collision check to test if boxes overlap
+	-Moved screen boundary checks into a function
+	-Renaming, some refactoring
+
+August 26, 2023
+Video 7
+	Actions Taken
+	-Debugger demo
+
+August 27, 2023
+Video 8
+	Actions Taken
+	-

@@ -1,0 +1,15 @@
+	-Useful Visual Studio tips: F5 to start with Debugger
+								arrows to move up/down the list of suggestions in Intellisense
+								tab to select the current suggestion from Intellisense
+								shift+ctrl+space to bring up the function info from Intellisense
+							****ctrl + click to go to the definition or declaration of a function/variable
+
+	-In this particular case, separating logic from the draw call means remoiving all they keypress checks 
+	 from ComposeFrame (and putting them in UpdateModel)
+
+	 -****We can just put a reference object into a class instead of using pointers if we want.****
+	  ****	 Reference objects cannot be reassigned (or set to null) the way that pointers can.****
+
+	  //shift + ctrl + space to pull up Intellisense function info
+
+	  ****The abstraction of xMax etc. was much faster to deal with than the actual numbers themselves.
