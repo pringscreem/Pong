@@ -52,7 +52,16 @@ private:
 	/********************************/
 	void DrawFilledRectangle(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue);
 	void DrawLine(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue);
-
+	void DrawPaddle(const int x, const int y, int red, int green, int blue);
+	void DrawBall(const int x, const int y, int red, int green, int blue);
+	void CheckControlKeys();
+	void UpdatePaddlePositions();
+	void ClampPaddlesToScreen();
+	void UpdateBallPosition();
+	void ClampBallToScreen();
+	void CheckBallCollision();
+	void CheckWallCollision();
+	void CheckPaddleCollision();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -66,8 +75,7 @@ private:
 	int red_mobile = 255, green_mobile = 255, blue_mobile = 255;
 	bool shapeIsChanged = false;
 	bool colourIsChanged = false; //a.k.a. "shiftIsPressed" or "controlIsPressed"
-	bool inhibitUp = false;
-	bool inhibitDown = false;
+	
 	bool inhibitLeft = false;
 	bool inhibitRight = false;
 	bool inCentralColumn = false;
@@ -83,4 +91,34 @@ private:
 	int vy_more_boxes[4] = { 0,0,0,0 };
 	//Collision Check
 	bool hasCollided = false;
+
+	/********************************/
+	/*  Pong Variables              */
+	/********************************/
+	//Ball
+	int ballWidth = 15;
+
+	int ballX = 400;
+	int ballY = 300;
+	int ballVX = 5;
+	int ballVY = 5;
+	
+	//Paddles
+	int paddleWidth = 100;
+	int paddleThickness = 30;
+	
+	//Paddle 1 (Left)
+	int paddleX1 = 30;
+	int paddleY1 = 300;
+	int paddleVY1 = 0;
+	bool inhibitUp1 = false;
+	bool inhibitDown1 = false;
+	
+	//Paddle 2 (Right)
+	int paddleX2 = 769;
+	int paddleY2 = 300;
+	int paddleVY2 = 0;
+	bool inhibitUp2 = false;
+	bool inhibitDown2 = false;
+
 };

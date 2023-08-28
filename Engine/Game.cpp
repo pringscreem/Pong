@@ -39,149 +39,21 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
-{
-	//Velocity Change
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	{
-		if (inhibitLeft)
-		{
-			//Do nothing
-		}
-		else
-		{
-			vx_mobile -= 1;
-			inhibitLeft = true;
-		}
-	}
-	else
-	{
-		inhibitLeft = false;
-	}
-	
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	{
-		if(inhibitRight)
-		{
-			//Do nothing
-		}
-		else
-		{
-			vx_mobile += 1;
-			inhibitRight = true;
-		}
-	}
-	else
-	{
-		inhibitRight = false;
-	}
-	
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		if (inhibitUp)
-		{
-			//Do nothing
-		}
-		else
-		{
-			vy_mobile -= 1;
-			inhibitUp = true;
-		}
-	}
-	else
-	{
-		inhibitUp = false;
-	}
-
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		if (inhibitDown)
-		{
-			//Do nothing
-		}
-		else
-		{
-			vy_mobile += 1;
-			inhibitDown = true;
-		}
-	}
-	else
-	{
-		inhibitDown = false;
-	}
-	
-	//Position Change
-	x_mobile = x_mobile + vx_mobile;
-	y_mobile= y_mobile+ vy_mobile;
-	//Check Screen Boundaries
-	CheckScreenBoundaries(x_mobile, y_mobile, vx_mobile, vy_mobile, gfx.ScreenWidth, gfx.ScreenHeight);
-	CheckScreenBoundaries(x_more_boxes[0], y_more_boxes[0], vx_more_boxes[0], vy_more_boxes[0], gfx.ScreenWidth, gfx.ScreenHeight);
-	CheckScreenBoundaries(x_more_boxes[1], y_more_boxes[1], vx_more_boxes[1], vy_more_boxes[1], gfx.ScreenWidth, gfx.ScreenHeight);
-	CheckScreenBoundaries(x_more_boxes[2], y_more_boxes[2], vx_more_boxes[2], vy_more_boxes[2], gfx.ScreenWidth, gfx.ScreenHeight);
-	CheckScreenBoundaries(x_more_boxes[3], y_more_boxes[3], vx_more_boxes[3], vy_more_boxes[3], gfx.ScreenWidth, gfx.ScreenHeight);
-
-	//Colour Change
-	if (wnd.kbd.KeyIsPressed(VK_SPACE))
-	{
-		red_mobile = 255;
-		green_mobile = 0;
-		blue_mobile = 255;
-	}
-	else if (!wnd.kbd.KeyIsPressed(VK_SPACE))
-	{
-		red_mobile = 255;
-		green_mobile = 255;
-		blue_mobile = 255;
-	}
-
-	//Shape Change
-	if(wnd.kbd.KeyIsPressed(VK_SHIFT))
-	{
-		shapeIsChanged = true;
-	}
-	else if (!wnd.kbd.KeyIsPressed(VK_SHIFT))
-	{
-		shapeIsChanged = false; //a.k.a. "shiftIsPressed" or "controlIsPressed"
-	}
-
-	//Collision Check and Colour Change 
-	//If any of them return true, the flag is flipped to true
-	hasCollided = OverlapTest(x_fixed, y_fixed, x_mobile, y_mobile) || 
-					OverlapTest(x_more_boxes[0], y_more_boxes[0], x_mobile, y_mobile) ||
-					OverlapTest(x_more_boxes[1], y_more_boxes[1], x_mobile, y_mobile) ||
-					OverlapTest(x_more_boxes[2], y_more_boxes[2], x_mobile, y_mobile) ||
-					OverlapTest(x_more_boxes[3], y_more_boxes[3], x_mobile, y_mobile);
+{	
+	CheckControlKeys();
+	UpdatePaddlePositions();
+	UpdateBallPosition();
 }
 
 
 void Game::ComposeFrame()
 {
-	//Draw Reticle or Box
-	if (hasCollided)
-	{
-		red_mobile = 255;
-		green_mobile = 0;
-		blue_mobile = 0;
-	}
-	if(shapeIsChanged)
-	{
-		DrawBox(x_mobile, y_mobile, red_mobile, green_mobile, blue_mobile);
-	}
-	else
-	{
-		DrawReticle(x_mobile, y_mobile, red_mobile, green_mobile, blue_mobile);
-	}
+	//Draw two paddles:
+	DrawPaddle(paddleX1, paddleY1, 255, 255, 255);
+	DrawPaddle(paddleX2, paddleY2, 255, 255, 255);
 
-	//Draw Second Box
-	DrawBox(x_fixed, y_fixed, red_fixed, green_fixed, blue_fixed);
-
-	//Draw More Boxes
-	DrawBox(x_more_boxes[0], y_more_boxes[0], 255, 255, 255);
-	DrawBox(x_more_boxes[1], y_more_boxes[1], 255, 255, 255);
-	DrawBox(x_more_boxes[2], y_more_boxes[2], 255, 255, 255);
-	DrawBox(x_more_boxes[3], y_more_boxes[3], 255, 255, 255);
-
-	DrawFilledRectangle(100, 100, 150, 300, 255, 255, 255);
-	DrawLine(0, 0, 400, 300, 255, 255, 255);
+	//Draw the "ball"
+	DrawBall(ballX, ballY, 255, 255, 255);
 }
 
 //Draw 5x5 box (corners only)
@@ -361,13 +233,20 @@ void Game::DrawFilledRectangle(const int xStart, const int yStart, const int xEn
 			}
 }
 
-void Game::DrawLine(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue)
+void Game::DrawLine (int xStart, int yStart, int xEnd, int yEnd, const int red, const int green, const int blue)
 {
 	//y = mx + b
 	float m = (float(yStart) - float(yEnd)) / (float(xStart) - float(xEnd));
 	float b = float(yStart);
 
-	for(int x = 0; x < gfx.ScreenWidth && x < xEnd; x++)
+	//Use the same algorithm even if the end is smaller
+	if(xStart > xEnd)
+	{
+		std::swap(xStart, xEnd);
+		std::swap(yStart, yEnd);
+		b = float(yStart);
+	}
+	for(int x = xStart; x < gfx.ScreenWidth && x < xEnd; x++)
 	{
 		const float y = m * (float)x + b;
 		if(y < gfx.ScreenHeight)
@@ -375,4 +254,232 @@ void Game::DrawLine(const int xStart, const int yStart, const int xEnd, const in
 			gfx.PutPixel(x, (int)y, red, green, blue);
 		}
 	}
+}
+
+
+//Draw the paddle
+//The paddle will be 30 pixels thick
+//Uses the centre coordinates
+void Game::DrawPaddle(const int x, const int y, int red, int green, int blue)
+{
+	int xStart = x - (paddleThickness / 2);
+	int xEnd = x + (paddleThickness / 2);
+	int yStart = y - (paddleWidth / 2);
+	int yEnd = y + (paddleWidth / 2);
+	DrawFilledRectangle(xStart, yStart, xEnd, yEnd, red, green, blue);
+}
+
+//Draw the "ball"
+//The ball will be 15 pixels wide
+//Uses the centre coordinates
+void Game::DrawBall(const int x, const int y, int red, int green, int blue)
+{
+	int xStart = x - (ballWidth / 2);
+	int xEnd = x + (ballWidth / 2);
+	int yStart = y - (ballWidth / 2);
+	int yEnd = y + (ballWidth / 2);
+	DrawFilledRectangle(xStart, yStart, xEnd, yEnd, red, green, blue);
+}
+
+//w, s, space for the left paddle
+//up, down, numpad0 for the right paddle
+void Game::CheckControlKeys()
+{
+	//Check Paddle 1 (Left) Keys
+	if (wnd.kbd.KeyIsPressed(0x57))
+	{
+		if (inhibitUp1)
+		{
+			//Do nothing
+		}
+		else
+		{
+			paddleVY1 = -5;
+			inhibitUp1 = true;
+		}
+	}
+	else
+	{
+		inhibitUp1 = false;
+	}
+
+	if (wnd.kbd.KeyIsPressed(0x53))
+	{
+		if (inhibitDown1)
+		{
+			//Do nothing
+		}
+		else
+		{
+			paddleVY1 = 5;
+			inhibitDown1 = true;
+		}
+	}
+	else
+	{
+		inhibitDown1 = false;
+
+	}
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		paddleVY1 = 0;
+	}
+
+	//Check Paddle 2 (Right) Keys
+	if (wnd.kbd.KeyIsPressed(VK_UP)) //W Key
+	{
+		if (inhibitUp2)
+		{
+			//Do nothing
+		}
+		else
+		{
+			paddleVY2 = -5;
+			inhibitUp2 = true;
+		}
+	}
+	else
+	{
+		inhibitUp2 = false;
+	}
+
+	if (wnd.kbd.KeyIsPressed(VK_DOWN)) //S key
+	{
+		if (inhibitDown2)
+		{
+			//Do nothing
+		}
+		else
+		{
+			paddleVY2 = 5;
+			inhibitDown2 = true;
+		}
+	}
+	else
+	{
+		inhibitDown2 = false;
+
+	}
+	if (wnd.kbd.KeyIsPressed(VK_NUMPAD0))
+	{
+		paddleVY2 = 0;
+	}
+}
+
+void Game::UpdatePaddlePositions()
+{
+	paddleY1 = paddleY1 + paddleVY1;
+	paddleY2 = paddleY2 + paddleVY2;
+	ClampPaddlesToScreen();
+}
+
+void Game::ClampPaddlesToScreen()
+{
+	//Check Paddle 1 (Left)
+	//Top
+	if(paddleY1 - (paddleWidth / 2) - 1 < 0)
+	{
+		paddleY1 = paddleWidth / 2;
+		paddleVY1 = 0;
+	}
+	//Bottom
+	if(paddleY1 + (paddleWidth / 2) > gfx.ScreenHeight - 1)
+	{
+		paddleY1 = gfx.ScreenHeight - (paddleWidth / 2) - 1;
+		paddleVY1 = 0;
+	}
+
+	//Check Paddle 1 (Left)
+	//Top
+	if (paddleY2 - (paddleWidth / 2) - 1 < 0)
+	{
+		paddleY2 = paddleWidth / 2;
+		paddleVY2 = 0;
+	}
+	//Bottom
+	if (paddleY2 + (paddleWidth / 2) > gfx.ScreenHeight - 1)
+	{
+		paddleY2 = gfx.ScreenHeight - (paddleWidth / 2) - 1;
+		paddleVY2 = 0;
+	}
+}
+
+void Game::UpdateBallPosition()
+{
+	ballX = ballX + ballVX;
+	ballY = ballY + ballVY;
+	CheckBallCollision();
+}
+
+void Game::ClampBallToScreen()
+{
+	//Check Paddle 1 (Left)
+	//Top
+	if (ballY - (ballWidth / 2) - 1 < 0)
+	{
+		ballY = ballWidth / 2;
+		ballVY = 0;
+	}
+	//Bottom
+	if (ballY + (ballWidth / 2) > gfx.ScreenHeight - 1)
+	{
+		ballY = gfx.ScreenHeight - (ballWidth / 2) - 1;
+		ballVY = 0;
+	}
+	//Left
+	if (ballX - (ballWidth / 2) - 1 < 0)
+	{
+		ballX = ballWidth / 2;
+		ballVX = 0;
+	}
+	//Right
+	if (ballX + (ballWidth / 2) > gfx.ScreenWidth - 1)
+	{
+		ballX = gfx.ScreenWidth - (ballWidth / 2) - 1;
+		ballVX = 0;
+	}
+}
+
+void Game::CheckBallCollision()
+{
+	CheckWallCollision();
+}
+
+void Game::CheckWallCollision()
+{
+	//Check Paddle 1 (Left)
+	//Top
+	if (ballY - (ballWidth / 2) - 1 < 0)
+	{
+		ballY = ballWidth / 2;
+		ballVY *= -1;
+	}
+	//Bottom
+	if (ballY + (ballWidth / 2) > gfx.ScreenHeight - 1)
+	{
+		ballY = gfx.ScreenHeight - (ballWidth / 2) - 1;
+		ballVY *= -1;
+	}
+	//Left
+	if (ballX - (ballWidth / 2) - 1 < 0)
+	{
+		ballX = ballWidth / 2;
+		ballVX *= -1;
+	}
+	//Right
+	if (ballX + (ballWidth / 2) > gfx.ScreenWidth - 1)
+	{
+		ballX = gfx.ScreenWidth - (ballWidth / 2) - 1;
+		ballVX *= -1;
+	}
+}
+
+void Game::CheckPaddleCollision()
+{
+	int paddleY2 = 300;
+	int paddleY1 = 300;
+	//Left
+	//Right
+	//Top
+	//Bottom
 }
