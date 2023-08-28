@@ -179,6 +179,9 @@ void Game::ComposeFrame()
 	DrawBox(x_more_boxes[1], y_more_boxes[1], 255, 255, 255);
 	DrawBox(x_more_boxes[2], y_more_boxes[2], 255, 255, 255);
 	DrawBox(x_more_boxes[3], y_more_boxes[3], 255, 255, 255);
+
+	DrawFilledRectangle(100, 100, 150, 300, 255, 255, 255);
+	DrawLine(0, 0, 400, 300, 255, 255, 255);
 }
 
 //Draw 5x5 box (corners only)
@@ -346,5 +349,30 @@ int Game::ClampScreenY(int y)
 	else
 	{
 		return y;
+	}
+}
+
+void Game::DrawFilledRectangle(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue)
+{
+	for(int i = xStart; i < xEnd; i++)
+		for(int j = yStart; j < yEnd; j++)
+			{
+				gfx.PutPixel(i, j, red, green, blue);
+			}
+}
+
+void Game::DrawLine(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue)
+{
+	//y = mx + b
+	float m = (float(yStart) - float(yEnd)) / (float(xStart) - float(xEnd));
+	float b = float(yStart);
+
+	for(int x = 0; x < gfx.ScreenWidth && x < xEnd; x++)
+	{
+		const float y = m * (float)x + b;
+		if(y < gfx.ScreenHeight)
+		{
+			gfx.PutPixel(x, (int)y, red, green, blue);
+		}
 	}
 }

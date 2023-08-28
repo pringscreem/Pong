@@ -47,6 +47,12 @@ private:
 	void ContainBox();
 	int ClampScreenX(int x);
 	int ClampScreenY(int y);
+	/********************************/
+	/*  Pong Functions              */
+	/********************************/
+	void DrawFilledRectangle(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue);
+	void DrawLine(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue);
+
 private:
 	MainWindow& wnd;
 	Graphics gfx;
