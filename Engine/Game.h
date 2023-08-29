@@ -23,7 +23,6 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-#include <stdio.h> 
 #include <stdlib.h>
 #include <time.h>
 

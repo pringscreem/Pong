@@ -1,6 +1,7 @@
 August 28, 20223
 Done:
 	-Github repository
+	-Set up with as few unnecessary .vs and .git files as reasonably possible
 	-Display paddles and ball
 	-Move paddles and ball
 	-Keyboard input for paddle movement
@@ -9,4 +10,11 @@ Done:
 	-Resizeable paddles, ball, and screen
 	-File output for manual debugging
 	-Randomized ball starting velocity
-	-
+	-Removed tutorial functions and mouse.cpp file output lines
+
+To Do:
+	-Test for point scoring
+	-Test for win conditions
+	-Set a start key
+	-Setup restart after scoring
+	-Keep scope limited (minimum viable product)

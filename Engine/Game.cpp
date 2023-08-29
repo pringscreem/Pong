@@ -20,7 +20,6 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include <stdio.h> 
 #include <stdlib.h>
 #include <time.h>
 #include <fstream>
@@ -66,6 +65,7 @@ void Game::ComposeFrame()
 }
 
 
+//Draw a rectangle between two points in the designated colour
 void Game::DrawFilledRectangle(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue)
 {
 	for(int i = xStart; i < xEnd; i++)
@@ -75,6 +75,7 @@ void Game::DrawFilledRectangle(const int xStart, const int yStart, const int xEn
 			}
 }
 
+//Draw a line between two points in the designated colour
 void Game::DrawLine (int xStart, int yStart, int xEnd, int yEnd, const int red, const int green, const int blue)
 {
 	//y = mx + b
