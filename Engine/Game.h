@@ -66,6 +66,7 @@ private:
 	void CheckPaddleCollision();
 	void UpdateHelperVariables();
 	void OutputToTextFile();
+	void DrawPoints(const int playerScore1, const int playerScore2);
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -119,8 +120,8 @@ private:
 	int paddleSide2 = paddleX2 - (paddleThickness / 2);
 
 	//Scorekeeping Variables
-	int playerScore1 = 0;
-	int playerScore2 = 0;
+	int playerScore1 = 3;
+	int playerScore2 = 3;
 	bool gameIsOver = false;
 
 	//Point Drawing Variables

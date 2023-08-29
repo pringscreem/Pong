@@ -62,6 +62,8 @@ void Game::ComposeFrame()
 
 	//Draw the "ball"
 	DrawBall(ballX, ballY, 255, 255, 255);
+
+	DrawPoints(playerScore1, playerScore2);
 }
 
 
@@ -418,33 +420,30 @@ void Game::OutputToTextFile()
 
 void Game::DrawPoints(const int playerScore1, const int playerScore2)
 {
-	int pointWidth = 5;
-	int pointHeight = 10;
-	int pointSpacing = 5;
-
-
 	for(int i = 0; i <= playerScore1; i++)
 	{
 		if(i == 0)
 		{
 			continue;
 		}
-		DrawFilledRectangle(0 + offsetX * i, 
-							0 + offsetY * i, 
-							5 + offsetX * i, 
-							10 + offsetY * i, 
+		DrawFilledRectangle(0 + offsetX * i + pointSpacing,
+							0 + offsetY, 
+							pointWidth + offsetX * i + pointSpacing,
+							pointHeight + offsetY, 
 							255, 255, 255);
 	}
+	//Bug in here
+	//Maybe the DrawRectangle function is bugging out because it wants to start from the top left of the rectangle
 	for (int i = 0; i <= playerScore2; i++)
 	{
 		if (i == 0)
 		{
 			continue;
 		}
-		DrawFilledRectangle(gfx.ScreenWidth - offsetX * i, 
-		                    gfx.ScreenHeight + offsetY * i, 
-		                    gfx.ScreenWidth + 5 + offsetX * i, 
-		                    gfx.ScreenHeight 10 + offsetY * i, 
+		DrawFilledRectangle(gfx.ScreenWidth - offsetX * i - pointSpacing,
+		                    0 + offsetY, 
+		                    gfx.ScreenWidth - pointWidth + offsetX * i - pointSpacing,
+		                    0 + pointHeight + offsetY, 
 		                    255, 255, 255);
 	}
 }
