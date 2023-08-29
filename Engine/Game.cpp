@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <fstream>
+#include <utility>
 
 
 
@@ -68,8 +69,13 @@ void Game::ComposeFrame()
 
 
 //Draw a rectangle between two points in the designated colour
-void Game::DrawFilledRectangle(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue)
+//xStart and yStart are supposed to be the top left, and xEnd and yEnd are supposed to be the bottom right.
+void Game::DrawFilledRectangle(int xStart, const int yStart, int xEnd, const int yEnd, const int red, const int green, const int blue)
 {
+	if(xStart > xEnd)
+	{
+		std::swap(xStart, xEnd); //This might have unintended consequences if I reuse this function somewhere else.
+	}
 	for(int i = xStart; i < xEnd; i++)
 		for(int j = yStart; j < yEnd; j++)
 			{
@@ -426,24 +432,24 @@ void Game::DrawPoints(const int playerScore1, const int playerScore2)
 		{
 			continue;
 		}
-		DrawFilledRectangle(0 + offsetX * i + pointSpacing,
-							0 + offsetY, 
-							pointWidth + offsetX * i + pointSpacing,
-							pointHeight + offsetY, 
-							255, 255, 255);
+		DrawFilledRectangle(0 + offsetX * i + pointSpacing, //xStart
+							0 + offsetY, //yStart
+							pointWidth + offsetX * i + pointSpacing, //xEnd
+							pointHeight + offsetY, //yEnd
+							255, 255, 255); //red, green, blue
 	}
-	//Bug in here
-	//Maybe the DrawRectangle function is bugging out because it wants to start from the top left of the rectangle
+
 	for (int i = 0; i <= playerScore2; i++)
 	{
 		if (i == 0)
 		{
 			continue;
-		}
-		DrawFilledRectangle(gfx.ScreenWidth - offsetX * i - pointSpacing,
-		                    0 + offsetY, 
-		                    gfx.ScreenWidth - pointWidth + offsetX * i - pointSpacing,
-		                    0 + pointHeight + offsetY, 
-		                    255, 255, 255);
+		} 
+		//The algebra to describe the two x points is tricky.
+		DrawFilledRectangle((gfx.ScreenWidth - 1) - offsetX - (i * pointWidth) - (i - 1) * pointSpacing, //xStart
+		                    0 + offsetY, //yStart
+							(gfx.ScreenWidth - 1) - offsetX - (i - 1) * (pointWidth + pointSpacing), //xEnd
+		                    pointHeight + offsetY, //yEnd
+		                    255, 255, 255); //red, green, blue
 	}
 }
