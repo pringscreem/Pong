@@ -117,4 +117,16 @@ private:
 	int paddleBottom2 = paddleY2 + (paddleWidth / 2);
 	int paddleTop2 = paddleY2 - (paddleWidth / 2);
 	int paddleSide2 = paddleX2 - (paddleThickness / 2);
+
+	//Scorekeeping Variables
+	int playerScore1 = 0;
+	int playerScore2 = 0;
+	bool gameIsOver = false;
+
+	//Point Drawing Variables
+	int pointWidth = 5;
+	int pointHeight = 10;
+	int pointSpacing = 5;
+	int offsetX = 10; //Offset from the left/right edge of the window
+	int offsetY = 10; //Offset from the top edge of the window
 };

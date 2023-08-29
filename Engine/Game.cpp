@@ -33,8 +33,8 @@ Game::Game( MainWindow& wnd )
 {
 	//Initialize Some Variables
 	srand(time(NULL));
-	ballVX = rand() % 5;
-	ballVY = rand() % 5;
+	ballVX = (rand() % 5) + 2;
+	ballVY = (rand() % 5) + 2;
 }
 
 void Game::Go()
@@ -414,4 +414,37 @@ void Game::OutputToTextFile()
 	MyCounterFile << "Again the first number: " << rand() % 100 << '\n';
 
 	MyCounterFile.close();
+}
+
+void Game::DrawPoints(const int playerScore1, const int playerScore2)
+{
+	int pointWidth = 5;
+	int pointHeight = 10;
+	int pointSpacing = 5;
+
+
+	for(int i = 0; i <= playerScore1; i++)
+	{
+		if(i == 0)
+		{
+			continue;
+		}
+		DrawFilledRectangle(0 + offsetX * i, 
+							0 + offsetY * i, 
+							5 + offsetX * i, 
+							10 + offsetY * i, 
+							255, 255, 255);
+	}
+	for (int i = 0; i <= playerScore2; i++)
+	{
+		if (i == 0)
+		{
+			continue;
+		}
+		DrawFilledRectangle(gfx.ScreenWidth - offsetX * i, 
+		                    gfx.ScreenHeight + offsetY * i, 
+		                    gfx.ScreenWidth + 5 + offsetX * i, 
+		                    gfx.ScreenHeight 10 + offsetY * i, 
+		                    255, 255, 255);
+	}
 }
