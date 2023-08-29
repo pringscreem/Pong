@@ -20,6 +20,10 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include <stdio.h> 
+#include <stdlib.h>
+#include <time.h>
+#include <fstream>
 
 
 
@@ -28,6 +32,10 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
+	//Initialize Some Variables
+	srand(time(NULL));
+	ballVX = rand() % 5;
+	ballVY = rand() % 5;
 }
 
 void Game::Go()
@@ -43,6 +51,7 @@ void Game::UpdateModel()
 	CheckControlKeys();
 	UpdatePaddlePositions();
 	UpdateBallPosition();
+	OutputToTextFile();
 }
 
 
@@ -551,4 +560,24 @@ void Game::UpdateHelperVariables()
 	paddleBottom2 = paddleY2 + (paddleWidth / 2);
 	paddleTop2 = paddleY2 - (paddleWidth / 2);
 	paddleSide2 = paddleX2 - (paddleThickness / 2);
+}
+
+void Game::OutputToTextFile()
+{
+	//Write the value of iterationCounter to a file named MyCounter.txt
+	//The previous location of this file (when using the Debug builder) was:
+	// C:\msys64\home\ssonn\GitHub2023\Chili-Framework-2016\Debug
+
+	int iterationCounter = 0;
+	std::ofstream MyCounterFile;
+	MyCounterFile.open("MyCounter.txt");
+
+	MyCounterFile << "The value of iterationCounter is " << iterationCounter << '\n';
+	MyCounterFile << "First number: " << rand() % 100 << '\n';
+	srand(time(NULL));
+	MyCounterFile << "Random number: " << rand() % 100 << '\n';
+	srand(1);
+	MyCounterFile << "Again the first number: " << rand() % 100 << '\n';
+
+	MyCounterFile.close();
 }

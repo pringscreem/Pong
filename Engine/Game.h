@@ -23,6 +23,9 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include <stdio.h> 
+#include <stdlib.h>
+#include <time.h>
 
 class Game
 {
@@ -63,6 +66,7 @@ private:
 	void CheckWallCollision();
 	void CheckPaddleCollision();
 	void UpdateHelperVariables();
+	void OutputToTextFile();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -99,6 +103,8 @@ private:
 	//Ball
 	int ballWidth = 15;
 
+	float myNumber = 0;
+	int myInt = 0;
 	int ballX = 400;
 	int ballY = 300;
 	int ballVX = 5;
@@ -135,5 +141,4 @@ private:
 	int paddleBottom2 = paddleY2 + (paddleWidth / 2);
 	int paddleTop2 = paddleY2 - (paddleWidth / 2);
 	int paddleSide2 = paddleX2 - (paddleThickness / 2);
-
 };
