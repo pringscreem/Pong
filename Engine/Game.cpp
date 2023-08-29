@@ -57,19 +57,26 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	//Draw two paddles:
-	DrawPaddle(paddleX1, paddleY1, 255, 255, 255);
-	DrawPaddle(paddleX2, paddleY2, 255, 255, 255);
+	if (!gameIsOver)
+	{
+		//Draw two paddles:
+		DrawPaddle(paddleX1, paddleY1, 255, 255, 255);
+		DrawPaddle(paddleX2, paddleY2, 255, 255, 255);
 
-	//Draw the "ball"
-	DrawBall(ballX, ballY, 255, 255, 255);
+		//Draw the "ball"
+		DrawBall(ballX, ballY, 255, 255, 255);
 
-	DrawPoints(playerScore1, playerScore2);
+		DrawPoints(playerScore1, playerScore2);
+	}
+	else
+	{
+		DrawGameOverScreen();
+	}
 }
 
 
 //Draw a rectangle between two points in the designated colour
-//xStart and yStart are supposed to be the top left, and xEnd and yEnd are supposed to be the bottom right.
+//(xStart, yStart) are supposed to be the top left, and (xEnd, yEnd) are supposed to be the bottom right.
 void Game::DrawFilledRectangle(int xStart, const int yStart, int xEnd, const int yEnd, const int red, const int green, const int blue)
 {
 	if(xStart > xEnd)
@@ -452,4 +459,25 @@ void Game::DrawPoints(const int playerScore1, const int playerScore2)
 		                    pointHeight + offsetY, //yEnd
 		                    255, 255, 255); //red, green, blue
 	}
+}
+
+void Game::CheckScores()
+{
+	if(playerScore1 >= 3)
+	{
+		gameIsOver = true;
+	}
+	else if (playerScore2 >= 3)
+	{
+		gameIsOver = true;
+	}
+	else
+	{
+		gameIsOver = false;
+	}
+}
+
+void Game::DrawGameOverScreen()
+{
+	//
 }

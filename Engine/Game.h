@@ -39,16 +39,6 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
-	void DrawBox(const int x, const int y, const int red, const int green, const int blue);
-	void DrawReticle(const int x, const int y, const int red, const int green, const int blue);
-	bool OverlapTest(const int x_fixed, const int y_fixed, const int x_mobile, const int y_mobile);
-	void CheckScreenBoundaries(int& x, int& y, int& vx, int& vy, const int ScreenWidth, const int ScreenHeight);
-	/********************************/
-	/*  Tutorial Functions          */
-	/********************************/
-	void ContainBox();
-	int ClampScreenX(int x);
-	int ClampScreenY(int y);
 	/********************************/
 	/*  Pong Functions              */
 	/********************************/
@@ -67,13 +57,14 @@ private:
 	void UpdateHelperVariables();
 	void OutputToTextFile();
 	void DrawPoints(const int playerScore1, const int playerScore2);
+	void CheckScores();
+	void DrawGameOverScreen();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-
 	/********************************/
 	/*  Pong Variables              */
 	/********************************/
