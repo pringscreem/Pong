@@ -73,29 +73,6 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-	//These are still private
-	//Box 1 (User-Controlled Box)
-	int x_mobile = 400, y_mobile = 300;
-	int vx_mobile = 0, vy_mobile = 0;
-	int red_mobile = 255, green_mobile = 255, blue_mobile = 255;
-	bool shapeIsChanged = false;
-	bool colourIsChanged = false; //a.k.a. "shiftIsPressed" or "controlIsPressed"
-	
-	bool inhibitLeft = false;
-	bool inhibitRight = false;
-	bool inCentralColumn = false;
-
-	//Box 2 (Target Box)
-	int x_fixed = gfx.ScreenWidth / 2, y_fixed = gfx.ScreenHeight / 2;
-	int red_fixed = 0, green_fixed = 255, blue_fixed = 0;
-
-	//More Boxes
-	int x_more_boxes[4] = {100, 200, 300, 700};
-	int y_more_boxes[4] = {100, 200, 300, 500};
-	int vx_more_boxes[4] = { 0,0,0,0 };
-	int vy_more_boxes[4] = { 0,0,0,0 };
-	//Collision Check
-	bool hasCollided = false;
 
 	/********************************/
 	/*  Pong Variables              */

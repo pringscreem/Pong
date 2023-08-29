@@ -51,7 +51,7 @@ void Game::UpdateModel()
 	CheckControlKeys();
 	UpdatePaddlePositions();
 	UpdateBallPosition();
-	OutputToTextFile();
+	//OutputToTextFile();
 }
 
 
@@ -65,173 +65,6 @@ void Game::ComposeFrame()
 	DrawBall(ballX, ballY, 255, 255, 255);
 }
 
-//Draw 5x5 box (corners only)
-void Game::DrawBox(const int x, const int y, const int red, const int green, const int blue)
-{
-	//Square Pixels
-	//Top Right
-	gfx.PutPixel(+5 + x, -5 + y, red, green, blue);
-	gfx.PutPixel(+5 + x, -4 + y, red, green, blue);
-	gfx.PutPixel(+5 + x, -3 + y, red, green, blue);
-	gfx.PutPixel(+4 + x, -5 + y, red, green, blue);
-	gfx.PutPixel(+3 + x, -5 + y, red, green, blue);
-
-	//Top Left
-	gfx.PutPixel(-5 + x, -5 + y, red, green, blue);
-	gfx.PutPixel(-5 + x, -4 + y, red, green, blue);
-	gfx.PutPixel(-5 + x, -3 + y, red, green, blue);
-	gfx.PutPixel(-4 + x, -5 + y, red, green, blue);
-	gfx.PutPixel(-3 + x, -5 + y, red, green, blue);
-
-	//Bottom Left
-	gfx.PutPixel(-5 + x, +5 + y, red, green, blue);
-	gfx.PutPixel(-5 + x, +4 + y, red, green, blue);
-	gfx.PutPixel(-5 + x, +3 + y, red, green, blue);
-	gfx.PutPixel(-4 + x, +5 + y, red, green, blue);
-	gfx.PutPixel(-3 + x, +5 + y, red, green, blue);
-
-	//Bottom Right
-	gfx.PutPixel(+5 + x, +5 + y, red, green, blue);
-	gfx.PutPixel(+5 + x, +4 + y, red, green, blue);
-	gfx.PutPixel(+5 + x, +3 + y, red, green, blue);
-	gfx.PutPixel(+4 + x, +5 + y, red, green, blue);
-	gfx.PutPixel(+3 + x, +5 + y, red, green, blue);
-}
-
-//Draw 5x5 reticle (with middle dot)
-void Game::DrawReticle(const int x, const int y, const int red, const int green, const int blue)
-{
-	//Reticle Pixels:
-	gfx.PutPixel(-5 + x,      y, red, green, blue); //Changed -5 to -6 (Debugger demo)
-	gfx.PutPixel(-4 + x,      y, red, green, blue);
-	gfx.PutPixel(-3 + x,      y, red, green, blue);
-	gfx.PutPixel(+5 + x,      y, red, green, blue);
-	gfx.PutPixel(+4 + x,      y, red, green, blue);
-	gfx.PutPixel(+3 + x,      y, red, green, blue);
-	gfx.PutPixel(     x, -5 + y, red, green, blue);
-	gfx.PutPixel(     x, -4 + y, red, green, blue);
-	gfx.PutPixel(     x, -3 + y, red, green, blue);
-	gfx.PutPixel(     x, +5 + y, red, green, blue);
-	gfx.PutPixel(     x, +4 + y, red, green, blue);
-	gfx.PutPixel(     x, +3 + y, red, green, blue);
-	gfx.PutPixel(     x,      y, red, green, blue);
-}
-
-//Check if two 5x5 pixel objects overlap
-bool Game::OverlapTest(const int x_box0, const int y_box0, const int x_box1, const int y_box1)
-{
-	//Helper Variables
-	//Box 0 (User-Controlled Box)
-	const int left_box0 = x_box0 - 5;
-	const int right_box0 = x_box0 + 5;
-	const int top_box0 = y_box0 - 5;
-	const int bottom_box0 = y_box0 + 5;
-	//Box 1 (Target Box)
-	const int left_box1 = x_box1 - 5;
-	const int right_box1 = x_box1 + 5;
-	const int top_box1 = y_box1 - 5;
-	const int bottom_box1 = y_box1 + 5;
-
-	return
-		left_box0 <= right_box1 &&
-		right_box0 >= left_box1 &&
-		top_box0 <= bottom_box1 &&
-		bottom_box0 >= top_box1;
-}
-
-//Check the screen boundaries and enforce them by setting the x or y value within the bounds 
-//and resetting the x or y velocity to zero.
-void Game::CheckScreenBoundaries(int& x, int& y, int& vx, int& vy, const int ScreenWidth, const int ScreenHeight)
-{
-	if (x + 5 >= ScreenWidth) //5 == cursor radius
-	{
-		x = ScreenWidth - 6;//6 == cursor radius + 1
-		vx = 0;
-	}
-	if (x - 5 < 0)
-	{
-		x = 0 + 5;
-		vx = 0;
-	}
-
-	if (y - 5 < 0)
-	{
-		y = 0 + 5;
-		vy = 0;
-	}
-	if (y + 5 >= ScreenHeight)
-	{
-		y = ScreenHeight - 6;
-		vy = 0;
-	}
-}
-
-//His function for checking/enforcing screen boundaries (tightly coupled to "_mobile" box)
-void Game::ContainBox()
-{
-	const int left = x_mobile - 5;
-	const int right = x_mobile + 5;
-	const int top = y_mobile - 5;
-	const int bottom = y_mobile + 5;
-
-	if (left < 0)
-	{
-		x_mobile = 5;
-	}
-	else if (right >= gfx.ScreenWidth)
-	{
-		x_mobile = gfx.ScreenWidth - 6;
-	}
-
-	if (top < 0)
-	{
-		y_mobile = 5;
-	}
-	else if (bottom >= gfx.ScreenHeight)
-	{
-		y_mobile = gfx.ScreenHeight - 6;
-	}
-}
-
-//His function for checking/enforcing x boundaries (not tightly coupled)
-int Game::ClampScreenX(int x)
-{
-	const int left = x - 5;
-	const int right = x + 5;
-
-	if (left < 0)
-	{
-		return 5;
-	}
-	else if (right >= gfx.ScreenWidth)
-	{
-		return gfx.ScreenWidth - 6;
-	}
-	else
-	{
-		return x;
-	}
-}
-
-//His function for checking/enforcing y boundaries (not tightly coupled)
-int Game::ClampScreenY(int y)
-{
-	const int top = y - 5;
-	const int bottom = y + 5;
-
-	if (top < 0)
-	{
-		return 5;
-	}
-	else if (bottom >= gfx.ScreenHeight)
-	{
-		return gfx.ScreenHeight - 6;
-	}
-	else
-	{
-		return y;
-	}
-}
 
 void Game::DrawFilledRectangle(const int xStart, const int yStart, const int xEnd, const int yEnd, const int red, const int green, const int blue)
 {
@@ -565,8 +398,8 @@ void Game::UpdateHelperVariables()
 void Game::OutputToTextFile()
 {
 	//Write the value of iterationCounter to a file named MyCounter.txt
-	//The previous location of this file (when using the Debug builder) was:
-	// C:\msys64\home\ssonn\GitHub2023\Chili-Framework-2016\Debug
+	//The previous location of this file (August 28, 2023) was:
+	// C:\msys64\home\ssonn\GitHub2023\Pong\Engine\Debug
 
 	int iterationCounter = 0;
 	std::ofstream MyCounterFile;

@@ -78,16 +78,7 @@ void Mouse::OnMouseLeave()
 
 void Mouse::OnMouseEnter()
 {
-	isInWindow = true;https://www.youtube.com/watch?list=PLqCJpWy5FohcehaXlCIt8sVBHBFFRVWsx&v=lTSaoRYo430
-	//Write the value of iterationCounter to a file named MyCounter.txt
-	//The previous location of this file (when using the Debug builder) was:
-	// C:\msys64\home\ssonn\GitHub2023\Chili-Framework-2016\Debug
-	int iterationCounter = 0;
-	std::ofstream MyMouseFile;
-	MyMouseFile.open("MyMouse.txt");
-	MyMouseFile << "The value of iterationCounter is " << iterationCounter;
-	MyMouseFile.close();
-
+	isInWindow = true;
 }
 
 void Mouse::OnMouseMove( int newx,int newy )

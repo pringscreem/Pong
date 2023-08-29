@@ -1,0 +1,12 @@
+August 28, 20223
+Done:
+	-Github repository
+	-Display paddles and ball
+	-Move paddles and ball
+	-Keyboard input for paddle movement
+	-Ball bouncing off walls
+	-Ball bouncing off paddles
+	-Resizeable paddles, ball, and screen
+	-File output for manual debugging
+	-Randomized ball starting velocity
+	-
