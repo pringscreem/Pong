@@ -103,22 +103,23 @@ private:
 	int ballY = 300;
 	int ballVX = 5;
 	int ballVY = 5;
-	int inhibitBounceCounter = 10;
+	int inhibitBounceCounter = 18;
+	int fullBounceCounter = 18;
 	
 	//Paddles
 	int paddleWidth = 100;
 	int paddleThickness = 30;
 	
 	//Paddle 1 (Left)
-	int paddleX1 = 30;
-	int paddleY1 = 300;
+	int paddleX1 = paddleThickness;
+	int paddleY1 = gfx.ScreenHeight / 2;
 	int paddleVY1 = 0;
 	bool inhibitUp1 = false;
 	bool inhibitDown1 = false;
 	
 	//Paddle 2 (Right)
-	int paddleX2 = 769;
-	int paddleY2 = 300;
+	int paddleX2 = gfx.ScreenWidth - paddleThickness - 1;
+	int paddleY2 = gfx.ScreenHeight / 2;
 	int paddleVY2 = 0;
 	bool inhibitUp2 = false;
 	bool inhibitDown2 = false;

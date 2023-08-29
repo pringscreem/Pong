@@ -478,37 +478,65 @@ void Game::CheckWallCollision()
 void Game::CheckPaddleCollision()
 {
 	UpdateHelperVariables();
-	//Left Side of Ball
-	if(ballLeft <= paddleSide1)
-	{
-		//Front of Paddle
-		if(ballTop <= paddleBottom1 && ballBottom >= paddleTop1)
-		{
-			ballVX *= -1;
-		}
-		//Top Side of Paddle
-		else if(ballBottom >= paddleTop1 && ballTop <= paddleTop1)
-		{	//Has Collided with the top of Paddle 1 (Left Paddle)
-			ballVY *= -1;
-		}
-		//Bottom Side of Paddle
-		else if(ballTop <= paddleBottom1 && ballBottom >= paddleBottom1)
-		{
-			ballVY *= -1;
-		}
+	//If the ball is close to the edges
+	if(
+		(ballLeft <= paddleSide1 ) || 
+		(ballRight >= paddleSide2 )
+	  )
+	{ 
+			//If the ball has not recently bounced
+			if(inhibitBounceCounter == fullBounceCounter)
+			{ 
+				inhibitBounceCounter--;
+				//Left Side of Ball (Left Paddle)
+				if(ballLeft <= paddleSide1)
+				{
+					//Front of Paddle
+					if(ballTop <= paddleBottom1 && ballBottom >= paddleTop1)
+					{
+						ballVX *= -1;
+					}
+					//Top Side of Paddle
+					else if(ballBottom >= paddleTop1 && ballTop <= paddleTop1)
+					{	//Has Collided with the top of Paddle 1 (Left Paddle)
+						ballVY *= -1;
+					}
+					//Bottom Side of Paddle
+					else if(ballTop <= paddleBottom1 && ballBottom >= paddleBottom1)
+					{
+						ballVY *= -1;
+					}
+				}
+				//Right Side of Ball (Right Paddle)
+				if (ballRight >= paddleSide2)
+				{
+					//Front of Paddle
+					if (ballTop <= paddleBottom2 && ballBottom >= paddleTop2)
+					{
+						ballVX *= -1;
+					}
+					//Top Side of Paddle
+					else if(ballBottom >= paddleTop2 && ballTop <= paddleTop2)
+					{	//Has collided with the top of Paddle 2 (Right Paddle)
+						ballVY *= -1;
+					}
+					//Bottom Side of Paddle
+					else if (ballTop <= paddleBottom2 && ballBottom >= paddleBottom2)
+					{
+						ballVY *= -1;
+					}
+				}
+			}
+			else
+			{
+				inhibitBounceCounter--;
+			}
 	}
-	//Right Side of Ball
-	if (ballRight >= paddleSide2)
+	else if (ballLeft > paddleSide1 && 
+			 ballRight < paddleSide2)
 	{
-		//Front of Paddle
-		if (ballTop <= paddleBottom2 && ballBottom >= paddleTop2)
-		{
-			ballVX *= -1;
-		}
-		//Top Side of Paddle
-		//Bottom Side of Paddle
+		inhibitBounceCounter = fullBounceCounter;
 	}
-
 }
 
 void Game::UpdateHelperVariables()
