@@ -62,6 +62,7 @@ private:
 	void CheckBallCollision();
 	void CheckWallCollision();
 	void CheckPaddleCollision();
+	void UpdateHelperVariables();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -102,6 +103,7 @@ private:
 	int ballY = 300;
 	int ballVX = 5;
 	int ballVY = 5;
+	int inhibitBounceCounter = 10;
 	
 	//Paddles
 	int paddleWidth = 100;
@@ -120,5 +122,17 @@ private:
 	int paddleVY2 = 0;
 	bool inhibitUp2 = false;
 	bool inhibitDown2 = false;
+
+	//Helper Variables
+	int ballTop = ballY + (ballWidth / 2);
+	int ballBottom = ballY - (ballWidth / 2);
+	int ballLeft = ballX - (ballWidth / 2);
+	int ballRight = ballX + (ballWidth / 2);
+	int paddleBottom1 = paddleY1 + (paddleWidth / 2);
+	int paddleTop1 = paddleY1 - (paddleWidth / 2);
+	int paddleSide1 = paddleX1 + (paddleThickness / 2);
+	int paddleBottom2 = paddleY2 + (paddleWidth / 2);
+	int paddleTop2 = paddleY2 - (paddleWidth / 2);
+	int paddleSide2 = paddleX2 - (paddleThickness / 2);
 
 };

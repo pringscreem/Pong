@@ -294,7 +294,7 @@ void Game::CheckControlKeys()
 		}
 		else
 		{
-			paddleVY1 = -5;
+			paddleVY1 = -7;
 			inhibitUp1 = true;
 		}
 	}
@@ -311,7 +311,7 @@ void Game::CheckControlKeys()
 		}
 		else
 		{
-			paddleVY1 = 5;
+			paddleVY1 = 7;
 			inhibitDown1 = true;
 		}
 	}
@@ -334,7 +334,7 @@ void Game::CheckControlKeys()
 		}
 		else
 		{
-			paddleVY2 = -5;
+			paddleVY2 = -7;
 			inhibitUp2 = true;
 		}
 	}
@@ -351,7 +351,7 @@ void Game::CheckControlKeys()
 		}
 		else
 		{
-			paddleVY2 = 5;
+			paddleVY2 = 7;
 			inhibitDown2 = true;
 		}
 	}
@@ -443,6 +443,7 @@ void Game::ClampBallToScreen()
 void Game::CheckBallCollision()
 {
 	CheckWallCollision();
+	CheckPaddleCollision();
 }
 
 void Game::CheckWallCollision()
@@ -476,10 +477,50 @@ void Game::CheckWallCollision()
 
 void Game::CheckPaddleCollision()
 {
-	int paddleY2 = 300;
-	int paddleY1 = 300;
-	//Left
-	//Right
-	//Top
-	//Bottom
+	UpdateHelperVariables();
+	//Left Side of Ball
+	if(ballLeft <= paddleSide1)
+	{
+		//Front of Paddle
+		if(ballTop <= paddleBottom1 && ballBottom >= paddleTop1)
+		{
+			ballVX *= -1;
+		}
+		//Top Side of Paddle
+		else if(ballBottom >= paddleTop1 && ballTop <= paddleTop1)
+		{	//Has Collided with the top of Paddle 1 (Left Paddle)
+			ballVY *= -1;
+		}
+		//Bottom Side of Paddle
+		else if(ballTop <= paddleBottom1 && ballBottom >= paddleBottom1)
+		{
+			ballVY *= -1;
+		}
+	}
+	//Right Side of Ball
+	if (ballRight >= paddleSide2)
+	{
+		//Front of Paddle
+		if (ballTop <= paddleBottom2 && ballBottom >= paddleTop2)
+		{
+			ballVX *= -1;
+		}
+		//Top Side of Paddle
+		//Bottom Side of Paddle
+	}
+
+}
+
+void Game::UpdateHelperVariables()
+{
+	ballTop = ballY - (ballWidth / 2);
+	ballBottom = ballY + (ballWidth / 2);
+	ballLeft = ballX - (ballWidth / 2);
+	ballRight = ballX + (ballWidth / 2);
+	paddleBottom1 = paddleY1 + (paddleWidth / 2);
+	paddleTop1 = paddleY1 - (paddleWidth / 2);
+	paddleSide1 = paddleX1 + (paddleThickness / 2);
+	paddleBottom2 = paddleY2 + (paddleWidth / 2);
+	paddleTop2 = paddleY2 - (paddleWidth / 2);
+	paddleSide2 = paddleX2 - (paddleThickness / 2);
 }
