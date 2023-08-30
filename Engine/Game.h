@@ -116,12 +116,16 @@ private:
 	int playerScore1 = 0;
 	int playerScore2 = 0;
 	bool gameIsOver = false;
+	bool roundIsOver = true;
 	int inhibitScoreCounter = 20;
 	const int fullInhibitScoreCounter = 20;
 	bool ballJustBouncedOffBackWall = false;
 	int winningPlayer = 0;
 	int redEnd = 0;
-	int redEndModifier = 2;
+	int greenEnd = 0;
+	int blueEnd = 0;
+	int colourEnd = 0;
+	int colourEndModifier = 2;
 
 	//Point Drawing Variables
 	int pointWidth = 5;

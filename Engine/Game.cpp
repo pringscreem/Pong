@@ -50,11 +50,14 @@ void Game::UpdateModel()
 {	
 	if (!gameIsOver)
 	{
-		CheckControlKeys();
-		UpdatePaddlePositions();
-		UpdateBallPosition();
-		CheckScores();
-		//OutputToTextFile();
+		if (!roundIsOver)
+		{
+			CheckControlKeys();
+			UpdatePaddlePositions();
+			UpdateBallPosition();
+			CheckScores();
+			//OutputToTextFile();
+		}
 	}
 }
 
@@ -71,8 +74,16 @@ void Game::ComposeFrame()
 		DrawBall(ballX, ballY, 0, 255, 0);
 
 		DrawPoints(playerScore1, playerScore2);
+		if (roundIsOver)
+		{
+			if (wnd.kbd.KeyIsPressed(VK_RETURN))
+			{
+				roundIsOver = false;
+			}
+			DrawGameOverScreen();
+		}
 	}
-	else
+	else if(gameIsOver)
 	{
 		DrawGameOverScreen();
 	}
@@ -490,25 +501,44 @@ void Game::DrawGameOverScreen()
 {
 	DrawBackGroundColour();
 	int red1 = 255;
-	int red2 = 255;
+	int green1 = 0;
 	int blue1 = 0;
+	int red2 = 255;
+	int green2 = 0;
 	int blue2 = 0;
+	int ballRed = 255;
+	int ballGreen = 0;
+	int ballBlue = 0;
 	if (winningPlayer == 1)
 	{
 		red1 = 0;
 		blue1 = 255;
 	}
-	else
+	else if(winningPlayer == 2)
 	{
 		blue2 = 255;
 		red2 = 0;
 	}
+	else
+	{
+		red1 = 0;
+		green1 = 255;
+		blue1 = 0;
+
+		red2 = 0;
+		green2 = 255;
+		blue2 = 0;
+
+		ballRed = 0;
+		ballGreen = 255;
+		ballBlue = 0;
+	}
 	//Draw two paddles:
-	DrawPaddle(paddleX1, paddleY1, red1, 0, blue1);
-	DrawPaddle(paddleX2, paddleY2, red2, 0, blue2);
+	DrawPaddle(paddleX1, paddleY1, red1, green1, blue1);
+	DrawPaddle(paddleX2, paddleY2, red2, green2, blue2);
 
 	//Draw the "ball"
-	DrawBall(ballX, ballY, 255, 0, 0);
+	DrawBall(ballX, ballY, ballRed, ballGreen, ballBlue);
 
 	DrawPoints(playerScore1, playerScore2);
 }
@@ -545,10 +575,24 @@ void Game::CheckScoreCollision()
 
 void Game::DrawBackGroundColour()
 {
-	redEnd += redEndModifier;
-	if (redEnd > 63 || redEnd < 1)
+	if (gameIsOver)
 	{
-		redEndModifier *= -1;
+		colourEnd += colourEndModifier;
+		if (colourEnd > 63 || colourEnd < 1)
+		{
+			colourEndModifier *= -1;
+		}
+		DrawFilledRectangle(0, 0, (gfx.ScreenWidth - 1), (gfx.ScreenHeight - 1), colourEnd, 0, 0);
 	}
-	DrawFilledRectangle(0, 0, (gfx.ScreenWidth - 1), (gfx.ScreenHeight - 1), redEnd, 0, 0);
+	else
+	{
+		colourEnd += colourEndModifier;
+		if (colourEnd > 63 || colourEnd < 1)
+		{
+			colourEndModifier *= -1;
+		}
+		DrawFilledRectangle(0, 0, (gfx.ScreenWidth - 1), (gfx.ScreenHeight - 1), 0, colourEnd, 0);
+	}
 }
+
+	
