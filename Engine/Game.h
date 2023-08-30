@@ -121,9 +121,8 @@ private:
 	const int fullInhibitScoreCounter = 20;
 	bool ballJustBouncedOffBackWall = false;
 	int winningPlayer = 0;
-	int redEnd = 0;
-	int greenEnd = 0;
-	int blueEnd = 0;
+	int scoringPlayer = 0;
+
 	int colourEnd = 0;
 	int colourEndModifier = 2;
 

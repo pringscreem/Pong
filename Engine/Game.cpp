@@ -488,11 +488,12 @@ void Game::CheckScores()
 	else if (playerScore2 >= 3)
 	{
 		gameIsOver = true;
+		winningPlayer = 2;
 	}
 	else
 	{
 		gameIsOver = false;
-		winningPlayer = 2;
+		winningPlayer = 0;
 	}
 }
 
@@ -503,18 +504,21 @@ void Game::DrawGameOverScreen()
 	int red1 = 255;
 	int green1 = 0;
 	int blue1 = 0;
+
 	int red2 = 255;
 	int green2 = 0;
 	int blue2 = 0;
+
 	int ballRed = 255;
 	int ballGreen = 0;
 	int ballBlue = 0;
-	if (winningPlayer == 1)
+
+	if (winningPlayer == 1 || scoringPlayer == 1)
 	{
 		red1 = 0;
 		blue1 = 255;
 	}
-	else if(winningPlayer == 2)
+	else if(winningPlayer == 2 || scoringPlayer == 2)
 	{
 		blue2 = 255;
 		red2 = 0;
@@ -554,11 +558,23 @@ void Game::CheckScoreCollision()
 			{
 				//The ball has touched the left wall
 				playerScore2++;
+				//If the game is not over, flip the round flag and randomize the direction of the ball
+				roundIsOver = true;
+				srand(time(NULL));
+				ballVX = (rand() % 5) + 2;
+				ballVY = (rand() % 5) + 2;
+				scoringPlayer = 2;
 			}
 			else if (ballX + (ballWidth / 2) >= (gfx.ScreenWidth - 1))
 			{
 				//The ball has touched the right wall
 				playerScore1++;
+				//If the game is not over, flip the round flag and randomize the direction of the ball
+				roundIsOver = true;
+				srand(time(NULL));
+				ballVX = (-1) * ((rand() % 5) + 2);
+				ballVY = (rand() % 5) + 2;
+				scoringPlayer = 1;
 			}
 		}
 		else
@@ -570,6 +586,7 @@ void Game::CheckScoreCollision()
 	{
 		inhibitScoreCounter = fullInhibitScoreCounter;
 		ballJustBouncedOffBackWall = false;
+		scoringPlayer = 0;
 	}
 }
 

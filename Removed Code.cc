@@ -341,3 +341,7 @@
 	//	{
 	//		DrawBox(i, j, red_mobile + i, green_mobile + j, blue_mobile + i + j);
 	//	}
+
+	//int redEnd = 0;
+	//int greenEnd = 0;
+	//int blueEnd = 0;
