@@ -18,3 +18,7 @@ To Do:
 	Later	-Set a start key
 	Later	-Setup restart after scoring
 	Ongoing -Keep scope limited (minimum viable product)
+
+August 29, 2023
+	Most of the functionality expected of Pong is complete.
+	Minimum viable project is complete.
