@@ -48,10 +48,14 @@ void Game::Go()
 
 void Game::UpdateModel()
 {	
-	CheckControlKeys();
-	UpdatePaddlePositions();
-	UpdateBallPosition();
-	//OutputToTextFile();
+	if (!gameIsOver)
+	{
+		CheckControlKeys();
+		UpdatePaddlePositions();
+		UpdateBallPosition();
+		CheckScores();
+		//OutputToTextFile();
+	}
 }
 
 
@@ -60,11 +64,11 @@ void Game::ComposeFrame()
 	if (!gameIsOver)
 	{
 		//Draw two paddles:
-		DrawPaddle(paddleX1, paddleY1, 255, 255, 255);
-		DrawPaddle(paddleX2, paddleY2, 255, 255, 255);
+		DrawPaddle(paddleX1, paddleY1, 0, 255, 0);
+		DrawPaddle(paddleX2, paddleY2, 0, 255, 0);
 
 		//Draw the "ball"
-		DrawBall(ballX, ballY, 255, 255, 255);
+		DrawBall(ballX, ballY, 0, 255, 0);
 
 		DrawPoints(playerScore1, playerScore2);
 	}
@@ -306,7 +310,6 @@ void Game::CheckBallCollision()
 
 void Game::CheckWallCollision()
 {
-	//Check Paddle 1 (Left)
 	//Top
 	if (ballY - (ballWidth / 2) - 1 < 0)
 	{
@@ -324,12 +327,14 @@ void Game::CheckWallCollision()
 	{
 		ballX = ballWidth / 2;
 		ballVX *= -1;
+		ballJustBouncedOffBackWall = true;
 	}
 	//Right
 	if (ballX + (ballWidth / 2) > gfx.ScreenWidth - 1)
 	{
 		ballX = gfx.ScreenWidth - (ballWidth / 2) - 1;
 		ballVX *= -1;
+		ballJustBouncedOffBackWall = true;
 	}
 }
 
@@ -443,7 +448,7 @@ void Game::DrawPoints(const int playerScore1, const int playerScore2)
 							0 + offsetY, //yStart
 							pointWidth + offsetX * i + pointSpacing, //xEnd
 							pointHeight + offsetY, //yEnd
-							255, 255, 255); //red, green, blue
+							0, 255, 0); //red, green, blue
 	}
 
 	for (int i = 0; i <= playerScore2; i++)
@@ -457,15 +462,17 @@ void Game::DrawPoints(const int playerScore1, const int playerScore2)
 		                    0 + offsetY, //yStart
 							(gfx.ScreenWidth - 1) - offsetX - (i - 1) * (pointWidth + pointSpacing), //xEnd
 		                    pointHeight + offsetY, //yEnd
-		                    255, 255, 255); //red, green, blue
+		                    0, 255, 0); //red, green, blue
 	}
 }
 
 void Game::CheckScores()
 {
+	CheckScoreCollision();
 	if(playerScore1 >= 3)
 	{
 		gameIsOver = true;
+		winningPlayer = 1;
 	}
 	else if (playerScore2 >= 3)
 	{
@@ -474,10 +481,74 @@ void Game::CheckScores()
 	else
 	{
 		gameIsOver = false;
+		winningPlayer = 2;
 	}
 }
 
+//This works because we stop updating the positions when the game over conditions are met
 void Game::DrawGameOverScreen()
 {
-	//
+	DrawBackGroundColour();
+	int red1 = 255;
+	int red2 = 255;
+	int blue1 = 0;
+	int blue2 = 0;
+	if (winningPlayer == 1)
+	{
+		red1 = 0;
+		blue1 = 255;
+	}
+	else
+	{
+		blue2 = 255;
+		red2 = 0;
+	}
+	//Draw two paddles:
+	DrawPaddle(paddleX1, paddleY1, red1, 0, blue1);
+	DrawPaddle(paddleX2, paddleY2, red2, 0, blue2);
+
+	//Draw the "ball"
+	DrawBall(ballX, ballY, 255, 0, 0);
+
+	DrawPoints(playerScore1, playerScore2);
+}
+
+void Game::CheckScoreCollision()
+{
+	if (ballX < 100 || ballX > gfx.ScreenWidth - 100)
+	{
+		if (ballJustBouncedOffBackWall)
+		{
+			inhibitScoreCounter--;
+			if (ballX - (ballWidth/2) <= 0)
+			{
+				//The ball has touched the left wall
+				playerScore2++;
+			}
+			else if (ballX + (ballWidth / 2) >= (gfx.ScreenWidth - 1))
+			{
+				//The ball has touched the right wall
+				playerScore1++;
+			}
+		}
+		else
+		{
+			inhibitScoreCounter--;
+		}
+	}
+	else if ((ballX > 100) && (ballX < gfx.ScreenWidth - 100)) //Ball is in the middle of the screen
+	{
+		inhibitScoreCounter = fullInhibitScoreCounter;
+		ballJustBouncedOffBackWall = false;
+	}
+}
+
+void Game::DrawBackGroundColour()
+{
+	redEnd += redEndModifier;
+	if (redEnd > 63 || redEnd < 1)
+	{
+		redEndModifier *= -1;
+	}
+	DrawFilledRectangle(0, 0, (gfx.ScreenWidth - 1), (gfx.ScreenHeight - 1), redEnd, 0, 0);
 }

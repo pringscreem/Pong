@@ -13,8 +13,8 @@ Done:
 	-Removed tutorial functions and mouse.cpp file output lines
 
 To Do:
-	-Test for point scoring
-	-Test for win conditions
-	-Set a start key
-	-Setup restart after scoring
-	-Keep scope limited (minimum viable product)
+	Done	-Test for point scoring
+	Done	-Test for win conditions
+	Later	-Set a start key
+	Later	-Setup restart after scoring
+	Ongoing -Keep scope limited (minimum viable product)

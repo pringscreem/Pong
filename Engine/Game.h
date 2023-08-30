@@ -59,6 +59,8 @@ private:
 	void DrawPoints(const int playerScore1, const int playerScore2);
 	void CheckScores();
 	void DrawGameOverScreen();
+	void CheckScoreCollision();
+	void DrawBackGroundColour();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -78,7 +80,7 @@ private:
 	int ballVX = 5;
 	int ballVY = 5;
 	int inhibitBounceCounter = 18;
-	int fullBounceCounter = 18;
+	const int fullBounceCounter = 18;
 	
 	//Paddles
 	int paddleWidth = 100;
@@ -114,6 +116,12 @@ private:
 	int playerScore1 = 0;
 	int playerScore2 = 0;
 	bool gameIsOver = false;
+	int inhibitScoreCounter = 20;
+	const int fullInhibitScoreCounter = 20;
+	bool ballJustBouncedOffBackWall = false;
+	int winningPlayer = 0;
+	int redEnd = 0;
+	int redEndModifier = 2;
 
 	//Point Drawing Variables
 	int pointWidth = 5;
