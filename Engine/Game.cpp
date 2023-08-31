@@ -24,6 +24,7 @@
 #include <time.h>
 #include <fstream>
 #include <utility>
+#include <random>
 
 
 
@@ -33,9 +34,8 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd )
 {
 	//Initialize Some Variables
-	srand(time(NULL));
-	ballVX = (rand() % 5) + 2;
-	ballVY = (rand() % 5) + 2;
+	RandomlySetBallVelocity();
+
 }
 
 void Game::Go()
@@ -60,7 +60,6 @@ void Game::UpdateModel()
 		}
 	}
 }
-
 
 void Game::ComposeFrame()
 {
@@ -88,7 +87,6 @@ void Game::ComposeFrame()
 		DrawGameOverScreen();
 	}
 }
-
 
 //Draw a rectangle between two points in the designated colour
 //(xStart, yStart) are supposed to be the top left, and (xEnd, yEnd) are supposed to be the bottom right.
@@ -128,7 +126,6 @@ void Game::DrawLine (int xStart, int yStart, int xEnd, int yEnd, const int red, 
 		}
 	}
 }
-
 
 //Draw the paddle
 //The paddle will be 30 pixels thick
@@ -557,24 +554,30 @@ void Game::CheckScoreCollision()
 			if (ballX - (ballWidth/2) <= 0)
 			{
 				//The ball has touched the left wall
+				scoringPlayer = 2;
 				playerScore2++;
 				//If the game is not over, flip the round flag and randomize the direction of the ball
 				roundIsOver = true;
-				srand(time(NULL));
-				ballVX = (rand() % 5) + 2;
-				ballVY = (rand() % 5) + 2;
-				scoringPlayer = 2;
+				//Randomly set the velocity of the ball going toward the other side of the screen
+				RandomlySetBallVelocity();
+				if (ballVX <= 0)
+				{
+					ballVX *= -1;
+				}
 			}
 			else if (ballX + (ballWidth / 2) >= (gfx.ScreenWidth - 1))
 			{
 				//The ball has touched the right wall
+				scoringPlayer = 1;
 				playerScore1++;
 				//If the game is not over, flip the round flag and randomize the direction of the ball
 				roundIsOver = true;
-				srand(time(NULL));
-				ballVX = (-1) * ((rand() % 5) + 2);
-				ballVY = (rand() % 5) + 2;
-				scoringPlayer = 1;
+				//Randomly set the velocity of the ball going toward the other side of the screen
+				RandomlySetBallVelocity();
+				if (ballVX >= 0)
+				{
+					ballVX *= -1;
+				}
 			}
 		}
 		else
@@ -612,4 +615,21 @@ void Game::DrawBackGroundColour()
 	}
 }
 
+void Game::RandomlySetBallVelocity()
+{
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::uniform_int_distribution<int> randomXValue(-5, 5);
+	std::uniform_int_distribution<int> randomYValue(-5, 5);
+	ballVX = randomXValue(rng);
+	if (ballVX > -2 && ballVX < 2)
+	{
+		ballVX += 2;
+	}
+	ballVY = randomYValue(rng);
+	if (ballVY > -2 && ballVY < 2)
+	{
+		ballVY += 2;
+	}
+}
 	

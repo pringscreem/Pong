@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include <stdlib.h>
 #include <time.h>
+#include <random>
 
 class Game
 {
@@ -61,6 +62,7 @@ private:
 	void DrawGameOverScreen();
 	void CheckScoreCollision();
 	void DrawBackGroundColour();
+	void RandomlySetBallVelocity();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
