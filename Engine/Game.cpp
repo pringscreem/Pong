@@ -70,7 +70,7 @@ void Game::ComposeFrame()
 		DrawPaddle(paddleX2, paddleY2, 0, 255, 0);
 
 		//Draw the "ball"
-		DrawBall(ballX, ballY, 0, 255, 0);
+		DrawBall(ballX, ballY, 255, 0, 0);
 
 		DrawPoints(playerScore1, playerScore2);
 		if (roundIsOver)
@@ -619,8 +619,8 @@ void Game::RandomlySetBallVelocity()
 {
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> randomXValue(-5, 5);
-	std::uniform_int_distribution<int> randomYValue(-5, 5);
+	std::uniform_int_distribution<int> randomXValue(-7, 7);
+	std::uniform_int_distribution<int> randomYValue(-7, 7);
 	ballVX = randomXValue(rng);
 	if (ballVX > -2 && ballVX < 2)
 	{
@@ -629,7 +629,7 @@ void Game::RandomlySetBallVelocity()
 	ballVY = randomYValue(rng);
 	if (ballVY > -2 && ballVY < 2)
 	{
-		ballVY += 2;
+		ballVY += 4;
 	}
 }
 	
